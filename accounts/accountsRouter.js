@@ -46,6 +46,22 @@ router.post("/", validateAccount, (req, res) => {
     });
 });
 
+router.put("/:id", validateAccountId, (req, res) => {
+  const changes = req.body;
+
+  if (Object.keys(changes) < 1) {
+    return res.status(400).json({ error: "Missing property data." });
+  }
+
+  db("accounts")
+    .where("id", req.params.id)
+    .update(changes)
+    .then(count => {
+      res.status(200).json({ message: `Updated ${count} records` });
+    })
+    .catch(err => res.json(err));
+});
+
 // custom middleware
 
 function validateAccount(req, res, next) {
@@ -60,6 +76,21 @@ function validateAccount(req, res, next) {
   }
 
   next();
+}
+
+function validateAccountId(req, res, next) {
+  db("accounts")
+    .where("id", req.params.id)
+    .then(([account]) => {
+      if (account) {
+        next();
+      } else {
+        res.status(400).json({ message: "Invalid account id." });
+      }
+    })
+    .catch(err => {
+      res.status(500).json({ error: "The account could not be retrieved." });
+    });
 }
 
 module.exports = router;
