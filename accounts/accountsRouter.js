@@ -14,7 +14,7 @@ router.get("/", (req, res) => {
     });
 });
 
-router.get("/:id", (req, res) => {
+router.get("/:id", validateAccountId, (req, res) => {
   const { id } = req.params;
 
   db("accounts")
@@ -60,6 +60,18 @@ router.put("/:id", validateAccountId, (req, res) => {
       res.status(200).json({ message: `Updated ${count} records` });
     })
     .catch(err => res.json(err));
+});
+
+router.delete("/:id", validateAccountId, (req, res) => {
+  db("accounts")
+    .where({ id: req.params.id })
+    .del()
+    .then(count => {
+      res.status(200).json({ message: `deleted ${count} records` });
+    })
+    .catch(err => {
+      res.json(err);
+    });
 });
 
 // custom middleware
