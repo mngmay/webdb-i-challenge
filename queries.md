@@ -10,7 +10,7 @@ SELECT Phone FROM Suppliers WHERE SupplierID = 11;
 
 ## List first 10 orders ever places, descending by the order date
 
-SELECT \* FROM [Orders] DESC ORDER BY OrderDate LIMIT 10;
+SELECT \* FROM [Orders] ORDER BY OrderDate DESC LIMIT 10;
 
 ## Find all customers that live in London, Madrid, or Brazil
 
@@ -31,4 +31,4 @@ SELECT COUNT (DISTINCT City) FROM Customers;
 
 ## (Stretch) Find all suppliers who have names longer than 20 characters. You can use `length(SupplierName)` to get the length of the name
 
-SELECT SupplierName FROM Suppliers Where length(SupplierName) > 20;
+SELECT SupplierName FROM Suppliers WHERE length(SupplierName) > 20;
